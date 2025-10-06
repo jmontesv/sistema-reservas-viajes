@@ -3,6 +3,7 @@ from infrastructure.usuario_repository_memory import UsuarioRepositoryMemory
 from infrastructure.viaje_repository_memory import ViajeRepositoryMemory
 from infrastructure.reserva_repository_memory import ReservaRepositoryMemory
 from use_cases.reservar_viaje import ReservarViaje
+from use_cases.listar_reservas_usuario import ListarReservasPorUsuario
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ reserva_repository = ReservaRepositoryMemory()
 
 # Instanciar el caso de uso
 reservar_viaje_use_case = ReservarViaje(viaje_repository, reserva_repository, usuario_repository)
+listar_reservas_por_usuario = ListarReservasPorUsuario(reserva_repository)
 
 @app.route("/reservar", methods=["POST"])
 def reservar():
@@ -33,6 +35,24 @@ def reservar():
         }), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-    
+
+@app.route("/reservas/<usuario_id>", methods=["GET"])
+def listar_reservas(usuario_id):
+    reservas = listar_reservas_por_usuario.execute(usuario_id)
+    resultado = [
+        {
+            "id": r.id,
+            "viaje": {
+                "origen": r.viaje.origen,
+                "destino": r.viaje.destino,
+                "fecha": r.viaje.fecha
+            },
+            "fecha_reserva": r.fecha_reserva.isoformat(),
+            "estado": r.estado
+        }
+        for r in reservas
+    ]
+    return jsonify(resultado)  
+
 if __name__ == "__main__":
     app.run(debug=True)
