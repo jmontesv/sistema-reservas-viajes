@@ -105,7 +105,7 @@ POST /reservar
 * [x] Implementaciones en memoria
 * [x] Caso de uso `ReservarViaje`
 * [x] Endpoint `/reservar` con Flask
-* [ ] Listar reservas de un usuario
+* [x] Listar reservas de un usuario
 * [ ] Persistencia en base de datos real
 * [ ] Autenticación de usuarios
 * [ ] Pruebas unitarias y de integración
