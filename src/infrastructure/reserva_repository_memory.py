@@ -1,4 +1,5 @@
 from infrastructure.repositories.reserva_repository import ReservaRepository
+from domain.reserva import Reserva
 
 class ReservaRepositoryMemory(ReservaRepository):
     def __init__(self):
