@@ -5,6 +5,8 @@ from infrastructure.reserva_repository_memory import ReservaRepositoryMemory
 from use_cases.reservar_viaje import ReservarViaje
 from use_cases.listar_reservas_usuario import ListarReservasPorUsuario
 from use_cases.cancelar_reserva import CancelarReserva
+from domain.exceptions import CancelacionNoPermitida
+from domain.exceptions import ReservaNoEncontrada
 
 app = Flask(__name__)
 
@@ -73,6 +75,10 @@ def cancelar_reserva_endpoint(reserva_id):
             "precio_pagado": reserva.precio_pagado
         }
         return jsonify(resultado), 200
+    except ReservaNoEncontrada as e:
+        return jsonify({"error": str(e)}), 404 
+    except CancelacionNoPermitida as e:
+        return jsonify({"error": str(e)}), 403 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 

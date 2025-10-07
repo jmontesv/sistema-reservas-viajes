@@ -1,3 +1,4 @@
+from domain.exceptions import ReservaNoEncontrada
 
 class CancelarReserva:
     
@@ -7,7 +8,7 @@ class CancelarReserva:
     def execute(self, reserva_id):
         reserva = self.reserva_repository.get_by_id(reserva_id)
         if not reserva:
-            raise Exception("Reserva no encontrada")
+            raise ReservaNoEncontrada("Reserva no encontrada")
         self.reserva_repository.cancel(reserva)
         reserva.viaje.cancelar_asiento() 
         return reserva
