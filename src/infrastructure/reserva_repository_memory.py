@@ -1,5 +1,6 @@
 from infrastructure.repositories.reserva_repository import ReservaRepository
 from domain.reserva import Reserva
+from datetime import datetime
 
 class ReservaRepositoryMemory(ReservaRepository):
     def __init__(self):
@@ -18,5 +19,5 @@ class ReservaRepositoryMemory(ReservaRepository):
         reservas = list(filter(lambda r: r.usuario.id == usuario_id, self.reservas))
         return reservas
 
-    def cancel(self, reserva):
-        reserva.cancelar_reserva()
+    def cancel(self, reserva: Reserva):
+        reserva.cancelar_reserva(datetime.now())

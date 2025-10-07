@@ -1,10 +1,15 @@
+from datetime import datetime
 
 class Viaje:
     def __init__(self, id, origen, destino, fecha, asientos_totales, asientos_disponibles, precio):
         self.id = id
         self.origen = origen
         self.destino = destino
-        self.fecha = fecha
+        # Convertimos fecha a datetime si viene como string
+        if isinstance(fecha, str):
+            self.fecha = datetime.fromisoformat(fecha)
+        else:
+            self.fecha = fecha
         self.asientos_totales = asientos_totales
         self.asientos_disponibles = asientos_disponibles
         self.precio = precio
