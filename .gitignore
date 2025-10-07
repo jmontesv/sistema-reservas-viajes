@@ -21,7 +21,6 @@ venv.bak/
 # Conda environment files
 
 *.conda
-*.yml
 
 # Distribution / packaging
 
@@ -87,3 +86,11 @@ cover/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# MYSQL 
+
+data
+
+# ENV
+
+.env
