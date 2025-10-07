@@ -1,3 +1,5 @@
+from mappers.reserva_mapper import reserva_model_to_entity
+from domain.reserva import Reserva
 
 class ListarReservasPorUsuario:
     
@@ -6,5 +8,9 @@ class ListarReservasPorUsuario:
 
     def execute(self, usuario_id):
         # Obtener reservas 
-        reservas = self.reserva_repository.get_by_user(usuario_id)
+        reservas_model = self.reserva_repository.get_by_user(usuario_id)
+        reservas = []
+        for reserva_model in reservas_model:
+            reserva = reserva_model_to_entity(reserva_model)
+            reservas.append(reserva)
         return reservas

@@ -19,3 +19,6 @@ class ReservaRepository(ABC):
     def cancel(self, reserva: Reserva):
         pass
 
+    @abstractmethod
+    def update(self, reserva: Reserva):
+        pass

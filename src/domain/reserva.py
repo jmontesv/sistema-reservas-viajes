@@ -1,7 +1,7 @@
 from domain.exceptions import CancelacionNoPermitida
 
 class Reserva:
-    def __init__(self, id, usuario, viaje, asiento, fecha_reserva, estado, precio_pagado):
+    def __init__(self, id, usuario, viaje, fecha_reserva, estado, precio_pagado, asiento=None):
         self.id = id
         self.usuario = usuario
         self.viaje = viaje

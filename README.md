@@ -39,25 +39,22 @@ git clone https://github.com/tu-usuario/sistema-reservas-viajes.git
 cd sistema-reservas-viajes
 ```
 
-### 2. Crear y activar entorno virtual (ejemplo con conda)
+### 2. Levantar los contenedores con Docker
 
 ```bash
-conda create -n reservas-viajes python=3.13.7 -y
-conda activate reservas-viajes
+docker-compose up -d
 ```
 
-### 3. Instalar dependencias
+### 3. Crear las tablas en la base de datos
 
 ```bash
-pip install flask
+docker-compose exec flask python src/infrastructure/init_db.py
 ```
 
-### 4. Ejecutar la app
-
-Desde la carpeta `src/`:
+### 4. Agregar datos de prueba (opcional) 
 
 ```bash
-python -m interface.app
+docker-compose exec flask python src/infrastructure/seed_db.py
 ```
 
 La aplicación se ejecutará en `http://127.0.0.1:5000`.
@@ -107,7 +104,7 @@ POST /reservar
 * [x] Endpoint `/reservar` con Flask
 * [x] Listar reservas de un usuario
 * [x] Caso de uso `CancelarReserva` 
-* [ ] Persistencia en base de datos real
+* [x] Persistencia en base de datos real
 * [ ] Autenticación de usuarios
 * [ ] Pruebas unitarias y de integración
 

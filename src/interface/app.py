@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-from infrastructure.usuario_repository_memory import UsuarioRepositoryMemory
-from infrastructure.viaje_repository_memory import ViajeRepositoryMemory
-from infrastructure.reserva_repository_memory import ReservaRepositoryMemory
+from infrastructure.repositories.reserva_repository_db import ReservaRepositoryDB
+from infrastructure.repositories.viaje_repository_db import ViajeRepositoryDB
+from infrastructure.repositories.usuario_repository_db import UsuarioRepositoryDB
 from use_cases.reservar_viaje import ReservarViaje
 from use_cases.listar_reservas_usuario import ListarReservasPorUsuario
 from use_cases.cancelar_reserva import CancelarReserva
@@ -12,9 +12,9 @@ app = Flask(__name__)
 
 
 # Crear instancias de los repositorios en memoria
-usuario_repository = UsuarioRepositoryMemory()
-viaje_repository = ViajeRepositoryMemory()
-reserva_repository = ReservaRepositoryMemory()
+usuario_repository = UsuarioRepositoryDB()
+viaje_repository = ViajeRepositoryDB()
+reserva_repository = ReservaRepositoryDB()
 
 # Instanciar el caso de uso
 reservar_viaje_use_case = ReservarViaje(viaje_repository, reserva_repository, usuario_repository)
