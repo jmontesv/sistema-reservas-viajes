@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
+from datetime import datetime
 from infrastructure.repositories.reserva_repository_db import ReservaRepositoryDB
 from infrastructure.repositories.viaje_repository_db import ViajeRepositoryDB
 from infrastructure.repositories.usuario_repository_db import UsuarioRepositoryDB
 from use_cases.reservar_viaje import ReservarViaje
 from use_cases.listar_reservas_usuario import ListarReservasPorUsuario
 from use_cases.cancelar_reserva import CancelarReserva
+from use_cases.listar_viajes_disponibles import ListarViajesDisponibles
 from domain.exceptions import CancelacionNoPermitida
 from domain.exceptions import ReservaNoEncontrada
 
@@ -20,6 +22,7 @@ reserva_repository = ReservaRepositoryDB()
 reservar_viaje_use_case = ReservarViaje(viaje_repository, reserva_repository, usuario_repository)
 listar_reservas_por_usuario = ListarReservasPorUsuario(reserva_repository)
 cancelar_reserva = CancelarReserva(reserva_repository)
+listar_viajes_disponibles = ListarViajesDisponibles(viaje_repository)
 
 @app.route("/reservar", methods=["POST"])
 def reservar():
@@ -81,6 +84,21 @@ def cancelar_reserva_endpoint(reserva_id):
         return jsonify({"error": str(e)}), 403 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+@app.route("/viajes/<fecha>", methods=["GET"])
+def listar_viajes(fecha):
+    origen = request.args.get("origen")
+    destino = request.args.get("destino") 
+    fecha_dt = datetime.strptime(fecha.strip(), "%Y-%m-%d") 
+    try:
+        viajes = listar_viajes_disponibles.execute(fecha_dt, origen, destino)
+        viajes_serializados = [viaje.to_dict() for viaje in viajes]
+        print(viajes_serializados)
+
+        return jsonify(viajes_serializados), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+        
 
 
 if __name__ == "__main__":

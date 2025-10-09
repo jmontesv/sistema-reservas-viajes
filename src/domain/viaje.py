@@ -31,3 +31,14 @@ class Viaje:
         if ocupacion >= 0.8:
             return self.precio * 1.2
         return self.precio
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "origen": self.origen,
+            "destino": self.destino,
+            "fecha": self.fecha.isoformat(),
+            "asientos_totales": self.asientos_totales,
+            "asientos_disponibles": self.asientos_disponibles,
+            "precio": self.precio
+        }
