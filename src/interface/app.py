@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datetime import datetime
 from infrastructure.repositories.reserva_repository_db import ReservaRepositoryDB
 from infrastructure.repositories.viaje_repository_db import ViajeRepositoryDB
@@ -12,6 +13,8 @@ from domain.exceptions import ReservaNoEncontrada
 
 app = Flask(__name__)
 
+# Habilitar CORS para todas las rutas
+CORS(app)
 
 # Crear instancias de los repositorios en memoria
 usuario_repository = UsuarioRepositoryDB()
@@ -89,7 +92,7 @@ def cancelar_reserva_endpoint(reserva_id):
 def listar_viajes(fecha):
     origen = request.args.get("origen")
     destino = request.args.get("destino") 
-    fecha_dt = datetime.strptime(fecha.strip(), "%Y-%m-%d") 
+    fecha_dt = datetime.strptime(fecha, "%Y-%m-%d") 
     try:
         viajes = listar_viajes_disponibles.execute(fecha_dt, origen, destino)
         viajes_serializados = [viaje.to_dict() for viaje in viajes]

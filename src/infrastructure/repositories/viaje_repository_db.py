@@ -28,7 +28,8 @@ class ViajeRepositoryDB(ViajeRepository):
                 query = query.filter(ViajeModel.origen == origen)
             if destino:
                 query = query.filter(ViajeModel.destino == destino)
-            return query
+            resultados = query.all()
+            return resultados
         finally:
             session.close()
     
